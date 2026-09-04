@@ -7,7 +7,29 @@ import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProjectTasksPage } from './pages/ProjectTasksPage'
 
-const theme = createTheme()
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#F48FB1',
+            contrastText: '#FFFFFF',
+        },
+        background: {
+            default: '#FCF0F6',
+            paper: '#FFFFFF',
+        },
+        text: {
+            primary: '#4A3B3C',
+        }
+    },
+    shape: {
+        borderRadius: 16,
+    },
+    typography: {
+        fontFamily: '"Times New Roman", Times, serif',
+    },
+})
+
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 export default function App() {

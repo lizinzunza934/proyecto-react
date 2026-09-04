@@ -38,9 +38,6 @@ export function LoginPage() {
             <Typography variant="h4" gutterBottom>
                 JWT Auth Demo
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Fase 1 — servicio + hook + pantalla de login.
-            </Typography>
 
             <Paper sx={{ p: 3 }}>
                 <form onSubmit={handleSubmit}>
