@@ -3,7 +3,6 @@ import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { useNavigate } from 'react-router-dom'
 import { ProjectForm } from '../components/ProjectForm'
 import { ProjectList } from '../components/ProjectList'
 import { Navbar } from '../components/Navbar'
@@ -12,7 +11,6 @@ import { useProjects } from '../hooks/useProjects'
 
 
 export function DashboardPage() {
-    const navigate = useNavigate()
     const { projects, loading, error, refetch } = useProjects()
     const projectForm = useProjectForm({ onSuccess: refetch })
 

@@ -76,7 +76,7 @@ export function TaskTable({ tasks, loading, error, onStatusChange, onEdit, onDel
                                     <Button size="small" variant="outlined" color="primary" onClick={() => onEdit(task)} sx={{ textTransform: 'none' }}>
                                         Editar
                                     </Button>
-                                    <Button size="small" variant="contained" color="primary" onClick={() => onDelete(task.id)} sx={{ textTransform: 'none', disableElevation: true }}>
+                                    <Button size="small" variant="contained" color="primary" disableElevation onClick={() => onDelete(task.id)} sx={{ textTransform: 'none' }}>
                                         Borrar
                                     </Button>
                                 </Stack>

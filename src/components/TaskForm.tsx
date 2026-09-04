@@ -100,7 +100,7 @@ export function TaskForm({ projectId, onSuccess }: TaskFormProps) {
                             size="small"
                         />
                     </Stack>
-                    <Button type="submit" variant="contained" sx={{ alignSelf: 'flex-start', disableElevation: true }}>
+                    <Button type="submit" variant="contained" disableElevation sx={{ alignSelf: 'flex-start' }}>
                         Crear Tarea
                     </Button>
                 </Stack>

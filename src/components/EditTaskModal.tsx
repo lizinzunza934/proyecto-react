@@ -70,7 +70,7 @@ export function EditTaskModal({ task, onClose, onSave }: EditTaskModalProps) {
                 </DialogContent>
                 <DialogActions sx={{ p: 3, pt: 0 }}>
                     <Button onClick={onClose} sx={{ textTransform: 'none', color: 'text.primary' }}>Cancelar</Button>
-                    <Button type="submit" variant="contained" sx={{ textTransform: 'none', disableElevation: true }}>Guardar</Button>
+                    <Button type="submit" variant="contained" disableElevation sx={{ textTransform: 'none' }}>Guardar</Button>
                 </DialogActions>
             </form>
         </Dialog>
