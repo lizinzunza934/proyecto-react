@@ -13,13 +13,13 @@ export async function createTask(projectId: number, body: NewTask): Promise<Task
     return data
 }
 
-// PUT: editar una tarea por completo
+// PUT: editar una tarea completa
 export async function updateTask(id: number, body: NewTask): Promise<Task> {
     const { data } = await httpClient.put<Task>(`/tasks/${id}`, body)
     return data
 }
 
-// PATCH: cambiar únicamente el estado de la tarea
+// PATCH: cambiar el estado de solo una tarea
 export async function updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
     const { data } = await httpClient.patch<Task>(`/tasks/${id}/status`, { status })
     return data
