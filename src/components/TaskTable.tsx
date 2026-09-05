@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper'
 import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import Table from '@mui/material/Table'
+import Skeleton from '@mui/material/Skeleton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -25,7 +26,18 @@ interface TaskTableProps {
 }
 
 export function TaskTable({ tasks, loading, error, onStatusChange, onEdit, onDelete }: TaskTableProps) {
-    if (loading) return <Box p={3} component={Paper} elevation={0} sx={{ border: '1px solid #FCE4EC' }}><Typography color="text.secondary">Cargando tareas...</Typography></Box>
+    //  implementar skeletons
+    if (loading) {
+        return (
+            <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #FCE4EC', p: 3 }}>
+                <Stack spacing={2}>
+                    <Skeleton variant="rectangular" height={40} sx={{ borderRadius: 1 }} />
+                    <Skeleton variant="rectangular" height={40} sx={{ borderRadius: 1 }} />
+                    <Skeleton variant="rectangular" height={40} sx={{ borderRadius: 1 }} />
+                </Stack>
+            </TableContainer>
+        )
+    }
     if (error) return <Box p={3} component={Paper} elevation={0} sx={{ border: '1px solid #FCE4EC' }}><Alert severity="error">{error}</Alert></Box>
     if (tasks.length === 0) return <Box p={3} component={Paper} elevation={0} sx={{ border: '1px solid #FCE4EC' }}><Typography color="text.secondary">No hay tareas en este proyecto.</Typography></Box>
 

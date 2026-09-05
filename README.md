@@ -6,8 +6,8 @@ Resuelve el problema de la desorganización de cargas de trabajo centralizando l
 
 ## Tecnologías Utilizadas
 
-*   **Core:** React 18, Vite, TypeScript.
-*   **Estilos y UI:** Material UI (MUI) v5.
+*   **Core:** React 19, Vite, TypeScript.
+*   **Estilos y UI:** Material UI (MUI) v7.
 *   **Enrutamiento:** React Router DOM v6.
 *   **Peticiones HTTP:** Axios.
 *   **Autenticación:** JSON Web Tokens (JWT).

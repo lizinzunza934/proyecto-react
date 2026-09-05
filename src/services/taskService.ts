@@ -1,9 +1,9 @@
 import { httpClient } from './httpClient'
 import type { Task, NewTask, TaskStatus } from '../types'
 
-// GET: obtener todas las tareas
-export async function getTasks(): Promise<Task[]> {
-    const { data } = await httpClient.get<Task[]>('/tasks')
+//  GET: obtener solo las tareas de un proyecto
+export async function getProjectTasks(projectId: number): Promise<Task[]> {
+    const { data } = await httpClient.get<Task[]>(`/projects/${projectId}/tasks`)
     return data
 }
 
@@ -13,8 +13,8 @@ export async function createTask(projectId: number, body: NewTask): Promise<Task
     return data
 }
 
-// PUT: editar una tarea completa
-export async function updateTask(id: number, body: NewTask): Promise<Task> {
+// PUT: editar una tarea completa, partial<task> en lugar de newTask
+export async function updateTask(id: number, body: Partial<Task>): Promise<Task> {
     const { data } = await httpClient.put<Task>(`/tasks/${id}`, body)
     return data
 }

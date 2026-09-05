@@ -1,70 +1,64 @@
+import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
+import Snackbar from '@mui/material/Snackbar'
 import Typography from '@mui/material/Typography'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { EditTaskModal } from '../components/EditTaskModal'
 import { Navbar } from '../components/Navbar'
 import { TaskForm } from '../components/TaskForm'
 import { TaskTable } from '../components/TaskTable'
-import { getProjects } from '../services/projectService'
-import { deleteTask, getTasks, updateTask, updateTaskStatus } from '../services/taskService'
+import { useProjectTasks } from '../hooks/useProjectTasks'
+import { deleteTask, updateTask, updateTaskStatus } from '../services/taskService'
 import type { Task, TaskStatus } from '../types'
 
 export function ProjectTasksPage() {
     const { projectId } = useParams<{ projectId: string }>()
     const numericProjectId = Number(projectId)
 
-    const [tasks, setTasks] = useState<Task[]>([])
-    const [projectName, setProjectName] = useState<string>('')
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    // ya no mas useState y useEffect, solo usamos el nuevo hook
+    const { tasks, projectName, loading, error, refetch } = useProjectTasks(numericProjectId)
+
     const [editingTask, setEditingTask] = useState<Task | null>(null)
 
-    useEffect(() => {
-        loadData()
-    }, [numericProjectId])
-
-    async function loadData() {
-        setLoading(true)
-        setError(null)
-        try {
-            const [allTasks, projects] = await Promise.all([getTasks(), getProjects()])
-            setTasks(allTasks.filter((t) => t.projectId === numericProjectId))
-            const currentProject = projects.find((p) => p.id === numericProjectId)
-            if (currentProject) setProjectName(currentProject.name)
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Error al cargar los datos')
-        } finally {
-            setLoading(false)
-        }
+    // mejoramos para que exita confirmación
+    const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+    const showToast = (message: string, severity: 'success' | 'error' = 'success') => {
+        setToast({ open: true, message, severity })
     }
 
     async function handleDelete(id: number) {
+        // pedimos confirmacipon
+        if (!window.confirm('¿Estás seguro de que deseas eliminar esta tarea?')) return
+
         try {
             await deleteTask(id)
-            loadData()
+            showToast('Tarea eliminada correctamente', 'success')
+            refetch()
         } catch (err) {
-            alert('No se pudo eliminar la tarea')
+            showToast('No se pudo eliminar la tarea', 'error')
         }
     }
 
     async function handleStatusChange(taskId: number, newStatus: TaskStatus) {
         try {
             await updateTaskStatus(taskId, newStatus)
-            loadData()
+            refetch()
         } catch (err) {
-            alert('Error al cambiar el estado.')
+            showToast('Error al cambiar el estado.', 'error')
         }
     }
 
+    // aqui ya no usamos as any
     async function handleSaveEdit(id: number, data: Partial<Task>) {
         try {
-            await updateTask(id, data as any)
+            await updateTask(id, data)
             setEditingTask(null)
-            loadData()
+            showToast('Tarea actualizada correctamente', 'success')
+            refetch()
         } catch (err) {
-            alert('No se pudo actualizar la tarea')
+            showToast('No se pudo actualizar la tarea', 'error')
         }
     }
 
@@ -77,10 +71,10 @@ export function ProjectTasksPage() {
                     Gestor de Tareas
                 </Typography>
                 <Typography variant="h6" color="text.primary" sx={{ mb: 4, fontStyle: 'italic' }}>
-                    Proyecto: {projectName}
+                    Proyecto: {projectName ? projectName : `Cargando...`}
                 </Typography>
 
-                <TaskForm projectId={numericProjectId} onSuccess={loadData} />
+                <TaskForm projectId={numericProjectId} onSuccess={refetch} />
 
                 <TaskTable
                     tasks={tasks}
@@ -97,6 +91,22 @@ export function ProjectTasksPage() {
                     onSave={handleSaveEdit}
                 />
             </Container>
+
+
+            <Snackbar
+                open={toast.open}
+                autoHideDuration={4000}
+                onClose={() => setToast({ ...toast, open: false })}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={() => setToast({ ...toast, open: false })}
+                    severity={toast.severity}
+                    sx={{ width: '100%' }}
+                >
+                    {toast.message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
